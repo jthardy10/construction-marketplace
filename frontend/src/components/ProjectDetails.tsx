@@ -51,47 +51,52 @@ const ProjectDetails: React.FC = () => {
   const handleMilestoneCompletion = async (milestoneId: string, completed: boolean) => {
     try {
       await api.patch(`/projects/${id}/milestone`, { milestoneId, completed });
-      fetchProject();  // Refresh project data
+      fetchProject();
     } catch (error) {
       console.error('Failed to update milestone:', error);
     }
   };
 
   if (loading) {
-    return <div>Loading project details...</div>;
+    return <div className="text-center">Loading project details...</div>;
   }
 
   if (error || !project) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500 text-center">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>{project.title}</h2>
-      <p>{project.description}</p>
-      <p>Budget: ${project.budget}</p>
-      <p>Location: {project.location}</p>
-      <p>Start Date: {new Date(project.startDate).toLocaleDateString()}</p>
-      <p>End Date: {new Date(project.endDate).toLocaleDateString()}</p>
-      <p>Required Skills: {project.requiredSkills.join(', ')}</p>
-      <p>Categories: {project.categories.join(', ')}</p>
-      <p>Status: {project.status}</p>
-      <h3>Milestones</h3>
-      {project.milestones.map((milestone) => (
-        <div key={milestone._id}>
-          <p>{milestone.description}</p>
-          <p>Due Date: {new Date(milestone.dueDate).toLocaleDateString()}</p>
-          <p>Payment Percentage: {milestone.paymentPercentage}%</p>
-          <label>
-            Completed:
-            <input
-              type="checkbox"
-              checked={milestone.completed}
-              onChange={(e) => handleMilestoneCompletion(milestone._id, e.target.checked)}
-            />
-          </label>
-        </div>
-      ))}
+    <div className="bg-white shadow-md rounded-lg p-6">
+      <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
+      <p className="text-gray-600 mb-4">{project.description}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <p className="text-gray-700"><span className="font-semibold">Budget:</span> ${project.budget}</p>
+        <p className="text-gray-700"><span className="font-semibold">Location:</span> {project.location}</p>
+        <p className="text-gray-700"><span className="font-semibold">Start Date:</span> {new Date(project.startDate).toLocaleDateString()}</p>
+        <p className="text-gray-700"><span className="font-semibold">End Date:</span> {new Date(project.endDate).toLocaleDateString()}</p>
+        <p className="text-gray-700"><span className="font-semibold">Required Skills:</span> {project.requiredSkills.join(', ')}</p>
+        <p className="text-gray-700"><span className="font-semibold">Categories:</span> {project.categories.join(', ')}</p>
+        <p className="text-gray-700"><span className="font-semibold">Status:</span> {project.status}</p>
+      </div>
+      <h3 className="text-xl font-semibold mb-4">Milestones</h3>
+      <div className="space-y-4">
+        {project.milestones.map((milestone) => (
+          <div key={milestone._id} className="bg-gray-100 p-4 rounded-lg">
+            <p className="font-semibold">{milestone.description}</p>
+            <p className="text-gray-700"><span className="font-semibold">Due Date:</span> {new Date(milestone.dueDate).toLocaleDateString()}</p>
+            <p className="text-gray-700"><span className="font-semibold">Payment Percentage:</span> {milestone.paymentPercentage}%</p>
+            <label className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                checked={milestone.completed}
+                onChange={(e) => handleMilestoneCompletion(milestone._id, e.target.checked)}
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              <span className="ml-2 text-gray-700">Completed</span>
+            </label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

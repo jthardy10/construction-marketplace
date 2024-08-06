@@ -52,18 +52,19 @@ const ProjectList: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading projects...</div>;
+    return <div className="text-center">Loading projects...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500 text-center">{error}</div>;
   }
 
   return (
     <div>
-      <h2>Projects</h2>
-      <div>
+      <h2 className="text-2xl font-bold mb-4">Projects</h2>
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           name="search"
           value={filters.search}
@@ -71,6 +72,7 @@ const ProjectList: React.FC = () => {
           placeholder="Search projects"
         />
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="number"
           name="minBudget"
           value={filters.minBudget}
@@ -78,6 +80,7 @@ const ProjectList: React.FC = () => {
           placeholder="Min Budget"
         />
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="number"
           name="maxBudget"
           value={filters.maxBudget}
@@ -85,6 +88,7 @@ const ProjectList: React.FC = () => {
           placeholder="Max Budget"
         />
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           name="category"
           value={filters.category}
@@ -92,32 +96,42 @@ const ProjectList: React.FC = () => {
           placeholder="Category"
         />
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           name="skill"
           value={filters.skill}
           onChange={handleFilterChange}
           placeholder="Required Skill"
         />
-        <select name="status" value={filters.status} onChange={handleFilterChange}>
+        <select
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
+        >
           <option value="">All Statuses</option>
           <option value="open">Open</option>
           <option value="in_progress">In Progress</option>
           <option value="completed">Completed</option>
         </select>
       </div>
-      {projects.map((project) => (
-        <div key={project._id}>
-          <h3><Link to={`/projects/${project._id}`}>{project.title}</Link></h3>
-          <p>{project.description}</p>
-          <p>Budget: ${project.budget}</p>
-          <p>Location: {project.location}</p>
-          <p>Start Date: {new Date(project.startDate).toLocaleDateString()}</p>
-          <p>End Date: {new Date(project.endDate).toLocaleDateString()}</p>
-          <p>Required Skills: {project.requiredSkills.join(', ')}</p>
-          <p>Categories: {project.categories.join(', ')}</p>
-          <p>Status: {project.status}</p>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {projects.map((project) => (
+          <div key={project._id} className="bg-white shadow-md rounded-lg p-4">
+            <h3 className="text-xl font-semibold mb-2">
+              <Link to={`/projects/${project._id}`} className="text-blue-600 hover:text-blue-800">{project.title}</Link>
+            </h3>
+            <p className="text-gray-600 mb-2">{project.description}</p>
+            <p className="text-gray-700"><span className="font-semibold">Budget:</span> ${project.budget}</p>
+            <p className="text-gray-700"><span className="font-semibold">Location:</span> {project.location}</p>
+            <p className="text-gray-700"><span className="font-semibold">Start Date:</span> {new Date(project.startDate).toLocaleDateString()}</p>
+            <p className="text-gray-700"><span className="font-semibold">End Date:</span> {new Date(project.endDate).toLocaleDateString()}</p>
+            <p className="text-gray-700"><span className="font-semibold">Required Skills:</span> {project.requiredSkills.join(', ')}</p>
+            <p className="text-gray-700"><span className="font-semibold">Categories:</span> {project.categories.join(', ')}</p>
+            <p className="text-gray-700"><span className="font-semibold">Status:</span> {project.status}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

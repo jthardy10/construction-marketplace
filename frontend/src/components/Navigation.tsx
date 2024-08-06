@@ -31,6 +31,9 @@ const Navigation: React.FC = () => {
                     {userRole === "client" && (
                       <Link to="/projects/create" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Create Project</Link>
                     )}
+                    {userRole === "contractor" && (
+                      <Link to="/contractor/dashboard" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Your Bids</Link>
+                    )}
                     <Link to="/profile" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Profile</Link>
                     <button onClick={handleLogout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logout</button>
                   </>

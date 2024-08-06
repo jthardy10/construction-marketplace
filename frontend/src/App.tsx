@@ -10,6 +10,7 @@ import CreateProject from "./components/CreateProject";
 import BidList from "./components/BidList";
 import CreateBid from "./components/CreateBid";
 import UserProfile from "./components/UserProfile";
+import ContractorDashboard from "./components/ContractorDashboard";
 import { RootState } from "./store";
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/projects/:projectId/bids" element={<PrivateRoute element={<BidList />} />} />
           <Route path="/projects/:projectId/bids/create" element={<PrivateRoute element={<CreateBid />} />} />
           <Route path="/profile" element={<PrivateRoute element={<UserProfile />} />} />
+          <Route path="/contractor/dashboard" element={<PrivateRoute element={<ContractorDashboard />} />} />
           <Route path="/" element={<Navigate to="/projects" />} />
         </Routes>
       </Layout>

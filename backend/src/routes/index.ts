@@ -22,4 +22,8 @@ router.put('/bids/:id/status', authenticateToken, authorizeRole(['client']), bid
 
 router.get('/users/:userId', authenticateToken, authController.getUserProfile);
 
+router.get('/bids/contractor', authenticateToken, authorizeRole(['contractor']), bidController.getContractorBids);
+router.put('/bids/:id', authenticateToken, authorizeRole(['contractor']), bidController.updateBid);
+router.delete('/bids/:id', authenticateToken, authorizeRole(['contractor']), bidController.deleteBid);
+
 export default router;

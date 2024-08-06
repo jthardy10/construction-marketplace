@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import api from '../services/api';
+import { RootState } from '../store';
 
 interface Milestone {
   _id: string;
@@ -29,6 +31,7 @@ const ProjectDetails: React.FC = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const userRole = useSelector((state: RootState) => state.auth.user?.role);
 
   useEffect(() => {
     fetchProject();
@@ -78,6 +81,16 @@ const ProjectDetails: React.FC = () => {
         <p className="text-gray-700"><span className="font-semibold">Categories:</span> {project.categories.join(', ')}</p>
         <p className="text-gray-700"><span className="font-semibold">Status:</span> {project.status}</p>
       </div>
+      {userRole === 'contractor' && project.status === 'open' && (
+        <div className="mb-6">
+          <Link
+            to={`/projects/${id}/bids/create`}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Create Bid
+          </Link>
+        </div>
+      )}
       <h3 className="text-xl font-semibold mb-4">Milestones</h3>
       <div className="space-y-4">
         {project.milestones.map((milestone) => (

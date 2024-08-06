@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const CreateBid: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [proposal, setProposal] = useState('');
   const { projectId } = useParams<{ projectId: string }>();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await api.post('/bids', { projectId, amount: parseFloat(amount), proposal });
+      navigate(`/projects/${projectId}/bids`);
     } catch (error) {
       console.error('Failed to create bid:', error);
     }

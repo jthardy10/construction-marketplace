@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import Bid from '../models/Bid';
+import Bid, { IBid } from '../models/Bid';
+import Project from '../models/Project';
 
 interface AuthRequest extends Request {
   user?: {
@@ -18,7 +19,19 @@ export const createBid = async (req: AuthRequest, res: Response): Promise<void> 
       return;
     }
 
-    const bid = new Bid({
+    const project = await Project.findById(projectId);
+    if (!project) {
+      res.status(404).json({ error: 'Project not found' });
+      return;
+    }
+
+    const existingBidsCount = await Bid.countDocuments({ projectId });
+    if (existingBidsCount >= project.maxBids) {
+      res.status(400).json({ error: 'Maximum number of bids reached for this project' });
+      return;
+    }
+
+    const bid: IBid = new Bid({
       projectId,
       contractorId,
       amount,
@@ -34,7 +47,9 @@ export const createBid = async (req: AuthRequest, res: Response): Promise<void> 
 
 export const getBidsByProject = async (req: Request, res: Response): Promise<void> => {
   try {
-    const bids = await Bid.find({ projectId: req.params.projectId });
+    const bids = await Bid.find({ projectId: req.params.projectId })
+      .populate('contractorId', 'username email')
+      .sort({ submittedAt: -1 });
     res.json(bids);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch bids' });
@@ -48,7 +63,7 @@ export const updateBidStatus = async (req: Request, res: Response): Promise<void
       req.params.id,
       { status },
       { new: true }
-    );
+    ).populate('contractorId', 'username email');
     if (!bid) {
       res.status(404).json({ error: 'Bid not found' });
       return;

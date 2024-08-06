@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import ProjectList from "./components/ProjectList";
+import ProjectDetails from "./components/ProjectDetails";
 import CreateProject from "./components/CreateProject";
 import BidList from "./components/BidList";
 import CreateBid from "./components/CreateBid";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/projects" element={<PrivateRoute element={<ProjectList />} />} />
+          <Route path="/projects/:id" element={<PrivateRoute element={<ProjectDetails />} />} />
           <Route path="/projects/create" element={<PrivateRoute element={<CreateProject />} />} />
           <Route path="/projects/:projectId/bids" element={<PrivateRoute element={<BidList />} />} />
           <Route path="/projects/:projectId/bids/create" element={<PrivateRoute element={<CreateBid />} />} />

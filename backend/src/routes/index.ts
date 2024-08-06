@@ -14,6 +14,7 @@ router.get('/projects', authenticateToken, projectController.getProjects);
 router.get('/projects/:id', authenticateToken, projectController.getProjectById);
 router.put('/projects/:id', authenticateToken, authorizeRole(['client']), projectController.updateProject);
 router.delete('/projects/:id', authenticateToken, authorizeRole(['client']), projectController.deleteProject);
+router.patch('/projects/:id/milestone', authenticateToken, authorizeRole(['client']), projectController.updateMilestone);
 
 router.post('/bids', authenticateToken, authorizeRole(['contractor']), bidController.createBid);
 router.get('/projects/:projectId/bids', authenticateToken, bidController.getBidsByProject);

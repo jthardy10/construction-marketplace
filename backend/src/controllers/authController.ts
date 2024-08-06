@@ -51,3 +51,16 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Login failed' });
   }
 };
+
+export const getUserProfile = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user = await User.findById(req.params.userId).select('-password');
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch user profile' });
+  }
+};

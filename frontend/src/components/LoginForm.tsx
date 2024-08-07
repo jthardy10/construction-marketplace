@@ -25,7 +25,12 @@ const LoginForm: React.FC = () => {
 
     try {
       const response = await api.post("/login", { email, password });
-      dispatch(setUser(response.data.user));
+      dispatch(setUser({
+        id: response.data.user.id,
+        username: response.data.user.username,
+        email: response.data.user.email,
+        role: response.data.user.role
+      }));
       dispatch(setToken(response.data.token));
       navigate("/projects");
     } catch (error) {

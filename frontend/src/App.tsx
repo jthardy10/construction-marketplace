@@ -11,6 +11,7 @@ import BidList from "./components/BidList";
 import CreateBid from "./components/CreateBid";
 import UserProfile from "./components/UserProfile";
 import ContractorDashboard from "./components/ContractorDashboard";
+import BidComparison from "./components/BidComparison";
 import { RootState } from "./store";
 import { setUser, setToken, setLoading } from "./store/authSlice";
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/projects/:projectId/bids/create" element={<PrivateRoute element={<CreateBid />} />} />
           <Route path="/profile" element={<PrivateRoute element={<UserProfile />} />} />
           <Route path="/contractor/dashboard" element={<PrivateRoute element={<ContractorDashboard />} />} />
+          <Route path="/projects/:projectId/bids/compare" element={<PrivateRoute element={<BidComparison />} />} />
           <Route path="/" element={<Navigate to="/projects" />} />
         </Routes>
       </Layout>

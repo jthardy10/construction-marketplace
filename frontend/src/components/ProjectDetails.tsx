@@ -91,6 +91,16 @@ const ProjectDetails: React.FC = () => {
          </Link>
        </div>
      )}
+     {userRole === 'client' && (
+       <div className="mt-6">
+         <Link
+           to={`/projects/${id}/bids/compare`}
+           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+         >
+           Compare Bids
+         </Link>
+       </div>
+     )}
      <h3 className="text-xl font-semibold mb-4">Milestones</h3>
      <div className="space-y-4">
        {project.milestones.map((milestone) => (

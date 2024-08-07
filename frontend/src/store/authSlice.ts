@@ -10,11 +10,13 @@ interface User {
 interface AuthState {
   user: User | null;
   token: string | null;
+  isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
   token: localStorage.getItem('token'),
+  isLoading: true,
 };
 
 const authSlice = createSlice({
@@ -23,6 +25,7 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload));
     },
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
@@ -31,10 +34,14 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      localStorage.removeItem('user');
       localStorage.removeItem('token');
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
   },
 });
 
-export const { setUser, setToken, logout } = authSlice.actions;
+export const { setUser, setToken, logout, setLoading } = authSlice.actions;
 export default authSlice.reducer;

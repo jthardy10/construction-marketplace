@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Layout from "./components/Layout";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
@@ -12,13 +12,33 @@ import CreateBid from "./components/CreateBid";
 import UserProfile from "./components/UserProfile";
 import ContractorDashboard from "./components/ContractorDashboard";
 import { RootState } from "./store";
+import { setUser, setToken, setLoading } from "./store/authSlice";
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
   const isAuthenticated = useSelector((state: RootState) => !!state.auth.token);
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (token && user) {
+      dispatch(setToken(token));
+      dispatch(setUser(user));
+    }
+    dispatch(setLoading(false));
+  }, [dispatch]);
+
   return (
     <Router>
       <Layout>

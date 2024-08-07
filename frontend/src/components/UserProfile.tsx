@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { RootState } from '../store';
 
@@ -14,11 +15,11 @@ const UserProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const user = useSelector((state: RootState) => state.auth.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user) {
-        setError('User not authenticated. Please log in again.');
         setLoading(false);
         return;
       }
@@ -28,17 +29,26 @@ const UserProfile: React.FC = () => {
         setError(null);
       } catch (error: any) {
         console.error('Failed to fetch user profile:', error);
-        setError(error.response?.data?.error || 'Failed to fetch user profile');
+        if (error.response && error.response.status === 401) {
+          navigate('/login');
+        } else {
+          setError('Failed to fetch profile. Please try again.');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [user]);
+  }, [user, navigate]);
 
   if (loading) {
     return <div className="text-center">Loading profile...</div>;
+  }
+
+  if (!user) {
+    navigate('/login');
+    return null;
   }
 
   if (error) {

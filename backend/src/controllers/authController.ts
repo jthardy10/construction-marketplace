@@ -43,7 +43,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET as string,
-      { expiresIn: '1d' }
+      { expiresIn: '7d' }
     );
 
     res.json({
@@ -69,6 +69,7 @@ export const getUserProfile = async (req: Request, res: Response): Promise<void>
     }
     res.json(user);
   } catch (error) {
+    console.error('Error fetching user profile:', error);
     res.status(500).json({ error: 'Failed to fetch user profile' });
   }
 };

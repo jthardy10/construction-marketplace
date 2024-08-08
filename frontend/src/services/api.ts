@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '../store';
 
 const api = axios.create({
-  baseURL: 'https://13.54.75.212/api',
+  baseURL: 'https://api.contractingmarketplace.com',
 });
 
 api.interceptors.request.use((config) => {
